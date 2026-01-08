@@ -2,8 +2,8 @@
 input). '''
 
 try:
-    num1 = float(input("First number: "))
-    num2 = float(input("Second number: "))
+    num1 = float(input("First number = "))
+    num2 = float(input("Second number = "))
     calc = input("press \n1 for addition \n2 for subtraction \n3 for multiplication \n4 for division \n")
     
     if calc == '1':
@@ -15,9 +15,9 @@ try:
     elif calc == '4':
         print(f"Result = {num1 / num2}")
     else:
-        print("Invalid operation!")
+        print("invalid input")
         
 
 except ZeroDivisionError:
-    print("Cannot divide by zero")
+    print("cannot divide by zero")
 
