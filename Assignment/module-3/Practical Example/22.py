@@ -1,10 +1,9 @@
-'''Write a Python program to connect to an SQLite3 database, create a table, insert data, and 
-fetch data'''
+'''22) Write a Python program to insert data into an SQLite3 database and fetch it. '''
 
 import sqlite3
 
 try:
-    db=sqlite3.connect("9.db")
+    db=sqlite3.connect("22py.db")
     print("Database connection established successfully.")
 except Exception as e:
    print(e)
