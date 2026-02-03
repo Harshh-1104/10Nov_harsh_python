@@ -41,7 +41,7 @@ class Admin(User):
         self.cstmr = tk.Entry(win); self.cstmr.pack()   
         
         #Entry is a Tkinter widget used to take text input from the user
-        #self.e1 Save that input box inside the object So other methods can use it
+        #self.object_name_that_u_wanna_put Save that input box inside the object So other methods can use it
 
         tk.Label(win, text="Phone").pack()
         self.phn = tk.Entry(win); self.phn.pack()
