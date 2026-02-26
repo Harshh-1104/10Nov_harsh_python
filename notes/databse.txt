@@ -1,0 +1,11 @@
+#sqlite3
+select view ma db ni jaga e cr. avse
+
+list ma loop print
+for i in data:
+     print(i[1])   #[index]
+
+#mysql
+in mysql everything is gonna work in curser cr
+auto_increment underscore is main bcz in sqlite3 u dont need _
+commit ma db otherwise execute in cr

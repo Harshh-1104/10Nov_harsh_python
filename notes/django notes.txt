@@ -1,0 +1,226 @@
+django notes
+
+what is framework?
+Definition of Framework (in coding language)
+
+A framework is a collection of pre-written code, libraries, tools, and conventions that provides a 
+standard structure for developing software applications, where the framework controls the program 
+flow and the developer writes code according to its rules.
+
+A framework is a ready-made structure that helps you build software faster and in an organized way.
+
+=============installing django==================
+pip install django
+pip install django==(version name)
+django-admin ==version        ->for checking version
+
+how r w gonna know what to use
+
+
+===========virtualenv===============
+
+virtualenv (name)
+for activating envirionment-> (name)\Scripts\activate
+
+
+envirionment=virtual of dependency 
+
+
+
+===============django project=================
+django-admin startproject (project name)
+cd (project name)
+code .                ->in vs code
+python .\manage.py  runserver
+
+asgi ->confi file
+
+common cmnd in django vscode
+python .\manage.py 
+
+===============user===================
+
+python .\manage.py createsuperuser
+
+
+
+
+===========app===========
+
+python .\manage.py startapp appname
+
+create templates folder in app 
+
+register ur app first 
+settings->installed app->write 'appname',
+
+if u create any view then default argu in def is request in para
+and should 
+return render(request,'file name')
+
+in app folder create templates and only html files are allowed in templates
+jetla template html files etla views
+templates->view->url
+
+in view create backend logic
+connect url of beckend to frontend 
+
+url ma slash last ma  ex-> about\
+link ma first                 ex-> \about
+
+
+
+return render(request,'filename',dictionary type{key:value})
+
+for passing context value write it in double curly bract {{ }}
+
+
+
+for dbms connecting-
+make url.py in app and connect it to project url using include function
+
+
+in django we make everything using class and object
+for table models.model
+
+
+for creating model
+python .\manage.py makemigrations     ->after creating table
+python .\manage.py migrate                     ->for every change u make in database u use this its like 
+				commit cmnd
+
+
+for registering ur model
+go to admin.py
+first import .models import *
+admin.site.register(tablename)
+
+
+data gets store in querry set like an object
+
+
+
+for getting data from frontend create forms.py  in app which is builtin library in django
+-for django validation and html form handling 
+also import * from models
+
+
+
+<form method="post">
+cross site request forgery    ->part of security 
+{% csrf_token %}                  ->tamplate tag          write this exact under form method
+
+for frontend to backend connecting in input type write also write column name attribute   -> 						                  name="dob"           
+				                  name="email"
+in their tag	
+
+in forms.py for validating req
+class justanyname(forms.modelform):
+class meta:
+         model=tablename
+         fields='__all__'             for selecting which column 
+         
+
+in view.py   app
+print(form.errors)        ->bcz we dont know wht error is
+
+
+for view 
+tablename.objects.
+
+
+same name as model u have to write in html part
+
+
+
+
+create static folder for css js
+
+css always comes in head part of html
+and change path /static/lib/....
+
+go to settings.py 
+static url
+copy the link tht we get from staticfile url link
+staticfiles_dirs=[
+base_dir/"static"
+]
+
+
+js comes in last part of body
+change url
+script src="/static/...
+
+
+do same for img folder
+
+
+if u want to go home main page just write /
+and remove .html 
+
+replace css/
+with /static/css/
+
+
+nav bar replacing
+remove index from every file and add / behind every html file name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
