@@ -9,15 +9,8 @@ flow and the developer writes code according to its rules.
 
 A framework is a ready-made structure that helps you build software faster and in an organized way.
 
-=============installing django==================
-pip install django
-pip install django==(version name)
-django-admin ==version        ->for checking version
 
-how r w gonna know what to use
-
-
-===========virtualenv===============
+[1]===========virtualenv===============
 
 virtualenv (name)
 for activating envirionment-> (name)\Scripts\activate
@@ -25,9 +18,16 @@ for activating envirionment-> (name)\Scripts\activate
 
 envirionment=virtual of dependency 
 
+[2]=============installing django==================
+pip install django
+pip install django==(version name)
+django-admin ==version        ->for checking version
 
+how r w gonna know what to use
 
-===============django project=================
+install it in env
+
+[3]===============django project=================
 django-admin startproject (project name)
 cd (project name)
 code .                ->in vs code
@@ -291,6 +291,40 @@ Student.objects.filter(id=1).update(age=24)
 ------------------------------------------------------------------
 
 
+
+===================FOR MySql======================
+
+up until now we have worked with sqlite now its time for mysql xampp
+
+for that first follow simple step till u create apps and dont migrate
+
+then start ur xampp and create database same name as project folder name
+
+then go to settings and go to database section and then go to given link and copy 
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "mydatabase",
+        "USER": "mydatabaseuser",
+        "PASSWORD": "mypassword",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
+}
+
+this part 
+
+and replace the part of database in setting.py 
+
+then remove postgresql and write mysql
+in name write the name of ur project name which is same as xampp database
+write root in user
+password - blank
+in host u can keep same or write localhost
+port-3306
+
+then apply cmnd migrate and refresh xampp browser and u will see all 10 tables in database
 
 
 
