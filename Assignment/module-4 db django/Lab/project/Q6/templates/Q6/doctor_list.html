@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Profiles</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        a { margin: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h1>Doctor Profiles</h1>
+    <a href="{% url 'q6_create' %}">Add New Doctor</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Specialty</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+            <tr>
+                <td>{{ doctor.name }}</td>
+                <td>{{ doctor.specialty }}</td>
+                <td>{{ doctor.email }}</td>
+                <td>{{ doctor.phone }}</td>
+                <td>{{ doctor.created_at }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No doctors found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
