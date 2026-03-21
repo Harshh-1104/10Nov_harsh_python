@@ -438,7 +438,7 @@ static root in settings
 
 
 ---webpage title---
-{% block title %} value {% endblock %}
+{% block title %} value {% endblock %
 
 
 
