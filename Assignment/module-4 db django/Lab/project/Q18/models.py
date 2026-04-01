@@ -5,6 +5,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.IntegerField(null=True, blank=True)
     city = models.CharField(max_length=100)
+    occupation = models.CharField(max_length=100, blank=True, default='')
 
     def __str__(self):
         return self.user.username

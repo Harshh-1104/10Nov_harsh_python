@@ -43,6 +43,11 @@
             <div class="relative z-10">
                 <p class="text-[0.65rem] font-bold uppercase tracking-[0.25em] text-indigo-200/80 mb-2">Net Worth (All-Time)</p>
                 <h2 class="text-3xl font-extrabold leading-none tracking-tight group-hover:scale-105 transition-transform origin-left duration-500">₹{{ total_balance|floatformat:2 }}</h2>
+                {% if show_emi and emi_all_time > 0 %}
+                <div class="flex items-center gap-2 mt-3 h-4">
+                    <span class="text-[9px] font-black text-indigo-200 bg-white/10 px-1.5 py-0.5 rounded uppercase border border-white/5 border-indigo-200/20 backdrop-blur-sm">EMI Deducted</span>
+                </div>
+                {% endif %}
             </div>
             <!-- Decorative elements -->
             <div class="absolute -right-16 -bottom-16 w-56 h-56 bg-indigo-500/30 rounded-full blur-[3rem] group-hover:bg-indigo-500/50 group-hover:scale-110 transition-all duration-700"></div>

@@ -62,6 +62,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': INPUT_CLASS, 'placeholder': '••••••••'}))
 
 class UserProfileUpdateForm(forms.Form):
-    first_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': INPUT_CLASS}))
-    age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': INPUT_CLASS}))
-    city = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': INPUT_CLASS}))
+    first_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Your name'}))
+    age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Your age'}))
+    city = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Your city'}))
+    occupation = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'e.g., Software Engineer'}))

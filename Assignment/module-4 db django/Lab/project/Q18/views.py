@@ -16,8 +16,9 @@ from django.utils.html import strip_tags
 from .models import Category, Budget, Transaction, UserProfile, EMI
 from .forms import CategoryForm, BudgetForm, TransactionForm, SignupForm, OTPForm, LoginForm, UserProfileUpdateForm
 
+@login_required(login_url='q18_login')
 def profile_view(request):
-    user_profile = get_object_or_404(UserProfile, user=request.user)
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST)
         if form.is_valid():
@@ -25,6 +26,7 @@ def profile_view(request):
             request.user.save()
             user_profile.age = form.cleaned_data['age']
             user_profile.city = form.cleaned_data['city']
+            user_profile.occupation = form.cleaned_data.get('occupation', '')
             user_profile.save()
             messages.success(request, "Profile updated successfully!")
             return redirect('q18_profile')
@@ -33,9 +35,15 @@ def profile_view(request):
             'first_name': request.user.first_name,
             'age': user_profile.age,
             'city': user_profile.city,
+            'occupation': user_profile.occupation,
         }
         form = UserProfileUpdateForm(initial=initial_data)
-    return render(request, 'profile.html', {'form': form})
+    return render(request, 'profile.html', {
+        'form': form,
+        'user_profile': user_profile,
+        'email': request.user.email,
+        'member_since': request.user.date_joined,
+    })
 
 def signup_view(request):
     if request.method == 'POST':
@@ -161,6 +169,34 @@ def get_emi_deductions(user, year, month):
             
     return total_deduction
 
+def get_all_time_emi_burden(user, target_date=None):
+    """Calculate total accumulated EMI burden up to a specific date (defaults to today)"""
+    if target_date is None:
+        target_date = date.today()
+    
+    emis = EMI.objects.filter(user=user, start_date__lte=target_date)
+    total_accumulated = 0
+    
+    for emi in emis:
+        # The EMI stops accumulating at either its end_date or the target_date
+        effective_end = min(emi.end_date, target_date) if emi.end_date else target_date
+        
+        if emi.frequency == 'Monthly':
+            # Count months: (Year difference * 12) + Month difference
+            months_diff = (effective_end.year - emi.start_date.year) * 12 + (effective_end.month - emi.start_date.month)
+            count = months_diff
+            # If the end day is >= start day, it means the current month's payment has occurred
+            if effective_end.day >= emi.start_date.day:
+                count += 1
+            total_accumulated += (max(0, count) * emi.amount)
+            
+        elif emi.frequency == 'Weekly':
+            days_diff = (effective_end - emi.start_date).days
+            count = (days_diff // 7) + 1
+            total_accumulated += (max(0, count) * emi.amount)
+            
+    return total_accumulated
+
 @login_required(login_url='q18_login')
 def dashboard_view(request):
     # Get period from request or default to current month
@@ -199,6 +235,12 @@ def dashboard_view(request):
     all_expenses = Transaction.objects.filter(user=request.user, type='Expense').aggregate(Sum('amount'))['amount__sum'] or 0
     total_balance = all_income - all_expenses
     
+    emi_all_time = 0
+    if show_emi:
+        # Deduct all-time EMI burden from net worth
+        emi_all_time = get_all_time_emi_burden(request.user)
+        total_balance -= emi_all_time
+    
     # Category summary for the selected month
     categories = Category.objects.filter(user=request.user).annotate(
         total_spent=Sum('transaction__amount', filter=Q(
@@ -214,6 +256,7 @@ def dashboard_view(request):
         'selected_expenses': selected_expenses,
         'emi_burden': emi_total,
         'total_balance': total_balance,
+        'emi_all_time': emi_all_time,
         'categories_summary': categories,
         'current_month_name': calendar.month_name[month],
         'current_month': month,
@@ -233,8 +276,18 @@ def transaction_list_view(request):
     month = request.GET.get('month')
     year = request.GET.get('year')
     
+    # Filter by search query if provided
+    query = request.GET.get('q')
+    if query:
+        transactions = Transaction.objects.filter(
+            user=request.user
+        ).filter(
+            Q(description__icontains=query) | 
+            Q(category__name__icontains=query)
+        ).order_by('-date')
+        period_name = f"Search results for '{query}'"
     # Filter by month/year if provided
-    if month and year:
+    elif month and year:
         transactions = Transaction.objects.filter(user=request.user, date__month=month, date__year=year).order_by('-date')
         period_name = f"{calendar.month_name[int(month)]} {year}"
     else:

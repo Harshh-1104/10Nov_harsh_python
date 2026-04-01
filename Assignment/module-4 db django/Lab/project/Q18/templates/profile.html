@@ -2,51 +2,167 @@
 {% block title %}My Profile{% endblock %}
 
 {% block content %}
-<div class="p-8 max-w-4xl mx-auto w-full mb-20 md:mb-0 space-y-10">
-    <div class="bg-white rounded-[2.5rem] p-10 mt-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 relative overflow-hidden">
-        <!-- Decorative Header Background -->
-        <div class="absolute top-0 left-0 right-0 h-40 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-900 text-white/10 flex items-center justify-end px-12 overflow-hidden">
-            <span class="material-symbols-outlined text-9xl translate-y-8 translate-x-8 opacity-20">architecture</span>
-        </div>
+<div class="p-4 md:p-8 max-w-5xl mx-auto w-full mb-20 md:mb-0 space-y-8">
 
-        <div class="relative z-10 flex flex-col md:flex-row items-center md:items-end gap-6 mb-12 mt-12 text-center md:text-left">
-            <div class="w-32 h-32 rounded-[2rem] bg-white p-2 shadow-xl shrink-0">
-                <div class="w-full h-full bg-slate-100 rounded-2xl flex items-center justify-center overflow-hidden">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl9l8N5RhyPYiCK2FbtJ8CVaQ1iiDexyORDNPx6Mb0vmvrAdlHjt057U-nny3lGMCzI0k_DK4AXzwTQ4UCejOpAi1Q1UVrHnTMcvv2aURBEgZo6zMOh0zZxhihGLIk-cdiaisLSpGdwZXDCDaV7KyfVfo59-_3nIkADgNvwK8LOYhmbOsTGyBJ4-BKUY2lGTmi9ZFIkI_xxGO57GZ7k_poirVrZQzj5NDOGdyS5gGcsvVSZypKix3j5iDHjRs-NMnQ0FJe7brX1xGD" alt="Profile" class="w-full h-full object-cover">
+    <!-- Profile Hero Card -->
+    <div class="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 rounded-[2.5rem] relative overflow-hidden shadow-xl shadow-slate-900/10">
+        <!-- Decorative Blobs -->
+        <div class="absolute -right-20 -top-20 w-72 h-72 bg-indigo-500/20 rounded-full blur-[4rem]"></div>
+        <div class="absolute -left-16 bottom-0 w-48 h-48 bg-rose-500/15 rounded-full blur-[3rem]"></div>
+        <div class="absolute right-1/3 bottom-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[2rem]"></div>
+
+        <div class="relative z-10 p-8 md:p-12">
+            <div class="flex flex-col md:flex-row items-center md:items-end gap-8">
+                <!-- Avatar -->
+                <div class="relative group">
+                    <div class="w-28 h-28 md:w-32 md:h-32 rounded-[1.75rem] bg-white/10 backdrop-blur-sm p-1.5 shadow-2xl ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-500">
+                        <div class="w-full h-full rounded-[1.25rem] bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 flex items-center justify-center overflow-hidden">
+                            <span class="text-white text-4xl md:text-5xl font-extrabold tracking-tight select-none">
+                                {{ user.first_name|default:user.username|make_list|first|upper }}
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Online Indicator -->
+                    <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-emerald-400 rounded-xl border-4 border-slate-800 shadow-lg"></div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="text-center md:text-left flex-1 mb-2">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                        {{ user.first_name|default:user.username }}
+                    </h1>
+                    <p class="text-slate-300 text-sm font-medium mt-1.5 flex items-center gap-2 justify-center md:justify-start">
+                        <span class="material-symbols-outlined text-[16px] text-indigo-300">mail</span>
+                        {{ email|default:"No email set" }}
+                    </p>
+                    <div class="flex flex-wrap items-center gap-3 mt-4 justify-center md:justify-start">
+                        {% if user_profile.occupation %}
+                        <span class="bg-white/10 backdrop-blur-sm text-white/90 px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide border border-white/10 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px] text-indigo-300">work</span>
+                            {{ user_profile.occupation }}
+                        </span>
+                        {% endif %}
+                        {% if user_profile.city %}
+                        <span class="bg-white/10 backdrop-blur-sm text-white/90 px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide border border-white/10 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px] text-emerald-300">location_on</span>
+                            {{ user_profile.city }}
+                        </span>
+                        {% endif %}
+                        <span class="bg-white/10 backdrop-blur-sm text-white/90 px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide border border-white/10 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px] text-amber-300">calendar_month</span>
+                            Joined {{ member_since|date:"M Y" }}
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="mb-2">
-                <h2 class="text-4xl font-extrabold text-slate-800 tracking-tight">{{ user.first_name|default:user.username }}</h2>
-                <p class="text-slate-500 font-bold tracking-widest text-sm uppercase mt-1">Verified Member</p>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm text-center group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-3 group-hover:bg-indigo-100 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+            </div>
+            <p class="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Name</p>
+            <p class="text-sm font-bold text-slate-800 truncate">{{ user.first_name|default:"—" }}</p>
+        </div>
+        <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm text-center group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-100 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">cake</span>
+            </div>
+            <p class="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Age</p>
+            <p class="text-sm font-bold text-slate-800">{{ user_profile.age|default:"—" }}</p>
+        </div>
+        <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm text-center group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-100 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">location_on</span>
+            </div>
+            <p class="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">City</p>
+            <p class="text-sm font-bold text-slate-800 truncate">{{ user_profile.city|default:"—" }}</p>
+        </div>
+        <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm text-center group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-100 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">work</span>
+            </div>
+            <p class="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Occupation</p>
+            <p class="text-sm font-bold text-slate-800 truncate">{{ user_profile.occupation|default:"—" }}</p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Section -->
+    <div class="bg-white rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
+        <!-- Section Header -->
+        <div class="px-8 pt-8 pb-4 border-b border-slate-100/80">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-extrabold text-slate-800 tracking-tight">Edit Profile</h2>
+                    <p class="text-xs text-slate-400 font-medium">Update your personal information below</p>
+                </div>
             </div>
         </div>
 
-        <form method="post" class="space-y-6 max-w-xl">
+        <form method="post" class="p-8">
             {% csrf_token %}
-            {% for field in form %}
-            <div>
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ms-1">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                <p class="text-rose-500 text-xs font-medium mt-1">{{ field.errors.0 }}</p>
-                {% endif %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                {% for field in form %}
+                <div class="{% if forloop.first %}md:col-span-2{% endif %}">
+                    <label class="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest mb-2.5 ms-0.5">
+                        <span class="material-symbols-outlined text-[14px] text-slate-400">
+                            {% if field.name == 'first_name' %}badge
+                            {% elif field.name == 'age' %}cake
+                            {% elif field.name == 'city' %}location_on
+                            {% elif field.name == 'occupation' %}work
+                            {% else %}info{% endif %}
+                        </span>
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-rose-500 text-xs font-medium mt-1.5 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[12px]">error</span>
+                        {{ field.errors.0 }}
+                    </p>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-            
-            <div class="pt-8 flex flex-col sm:flex-row gap-4 mb-4">
-                <button type="submit" class="flex-1 bg-slate-700 text-white py-4 rounded-xl font-bold shadow-xl shadow-slate-200 hover:bg-slate-800 hover:shadow-slate-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all text-sm tracking-wide">
+
+            <!-- Actions -->
+            <div class="pt-10 flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="flex-1 bg-gradient-to-r from-slate-700 to-slate-800 text-white py-4 rounded-2xl font-bold shadow-xl shadow-slate-200 hover:shadow-slate-300 hover:from-slate-800 hover:to-slate-900 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all text-sm tracking-wide flex items-center justify-center gap-2 group">
+                    <span class="material-symbols-outlined text-[18px] group-hover:rotate-12 transition-transform">save</span>
                     Save Changes
                 </button>
-                <a href="{% url 'q18_dashboard' %}" class="flex-1 bg-white border border-slate-200 text-slate-600 py-4 rounded-xl font-bold text-center hover:bg-slate-50 transition-all text-sm tracking-wide shadow-sm hover:shadow-md flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-[18px]">arrow_back</span> Dashboard
-                </a>
-            </div>
-            <div class="sm:flex">
-                <a href="{% url 'q18_logout' %}" class="w-full bg-rose-50 border border-rose-100 text-rose-600 py-4 rounded-xl font-bold text-center hover:bg-rose-100 transition-all text-sm tracking-wide shadow-sm hover:shadow-md flex items-center justify-center gap-2 mt-4 sm:mt-0">
-                    <span class="material-symbols-outlined text-[18px]">logout</span> Log Out Securely
+                <a href="{% url 'q18_dashboard' %}" class="flex-1 bg-slate-50 border border-slate-200 text-slate-600 py-4 rounded-2xl font-bold text-center hover:bg-slate-100 transition-all text-sm tracking-wide shadow-sm hover:shadow-md flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Dashboard
                 </a>
             </div>
         </form>
     </div>
+
+    <!-- Danger Zone -->
+    <div class="bg-white rounded-[2rem] border border-rose-100/60 shadow-sm overflow-hidden">
+        <div class="px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">shield</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800">Security & Session</h3>
+                    <p class="text-xs text-slate-400 font-medium">End your current session on this device</p>
+                </div>
+            </div>
+            <a href="{% url 'q18_logout' %}" class="w-full sm:w-auto bg-rose-50 border border-rose-100 text-rose-600 px-8 py-3.5 rounded-2xl font-bold text-center hover:bg-rose-100 hover:border-rose-200 transition-all text-sm tracking-wide flex items-center justify-center gap-2 group">
+                <span class="material-symbols-outlined text-[18px] group-hover:translate-x-0.5 transition-transform">logout</span>
+                Log Out
+            </a>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
